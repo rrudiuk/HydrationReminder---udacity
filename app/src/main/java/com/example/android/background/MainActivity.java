@@ -25,10 +25,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.android.background.sync.ReminderTasks;
-import com.example.android.background.sync.ReminderUtilities;
 import com.example.android.background.sync.WaterReminderIntentService;
 import com.example.android.background.utilities.PreferenceUtilities;
+
+import static com.example.android.background.sync.ReminderTasks.ACTION_INCREMENT_WATER_COUNT;
 
 public class MainActivity extends AppCompatActivity implements
         SharedPreferences.OnSharedPreferenceChangeListener {
@@ -52,9 +52,6 @@ public class MainActivity extends AppCompatActivity implements
         /** Set the original values in the UI **/
         updateWaterCount();
         updateChargingReminderCount();
-
-        // TODO (23) Schedule the charging reminder
-        ReminderUtilities.scheduleChargingReminder(this);
 
         /** Setup the shared preference listener **/
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -87,14 +84,13 @@ public class MainActivity extends AppCompatActivity implements
         if (mToast != null) mToast.cancel();
         mToast = Toast.makeText(this, R.string.water_chug_toast, Toast.LENGTH_SHORT);
         mToast.show();
-
+        // TODO (15) Create an explicit intent for WaterReminderIntentService
         Intent incrementWaterCountIntent = new Intent(this, WaterReminderIntentService.class);
-        incrementWaterCountIntent.setAction(ReminderTasks.ACTION_INCREMENT_WATER_COUNT);
+        // TODO (16) Set the action of the intent to ACTION_INCREMENT_WATER_COUNT
+        incrementWaterCountIntent.setAction(ACTION_INCREMENT_WATER_COUNT);
+        // TODO (17) Call startService and pass the explicit intent you just created
         startService(incrementWaterCountIntent);
     }
-
-
-    // TODO (24) Remove the button and testNotification code
 
     @Override
     protected void onDestroy() {
